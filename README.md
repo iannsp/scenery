@@ -9,7 +9,7 @@
 
 
 
-### O que é um cenário (*Scenery*)? ###
+###Scenery###
 
 Um cenário é uma *configuração de ambiente para execução* e teste de *expectativas* de um conjunto de *Ações*. 
 
@@ -17,19 +17,19 @@ As caracteristicas de um cenário são:
 
 * Conjunto inicial de dados.
 * Conjunto de ações.
-* Modelo de execução. 
+* Estratégia de execução. 
 
 ####Criando um cenário####
 
 ```php
-   $initialDataState = new [Data](https://github.com/iannsp/scenery/blob/master/src/Iannsp/Scenery/Data.php)();
-   $scenery = new [Scenery]((https://github.com/iannsp/scenery/blob/master/src/Iannsp/Scenery/Scenery.php))($initialDataState); 
+   $initialDataState = new Data();
+   $scenery = new Scenery($initialDataState); 
 ```
 
 
-### O que é uma Ação(*Action*)? ###
+###Action###
 
-Action é um comportamento existente num Domínio cujos efeitos podem ser testados através das expectativas.
+Action é um **comportamento** existente em um **Domínio** cujo **efeito** pode ser testado utilizando **expectativas**.
 
 características de uma Action:
 
