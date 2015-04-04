@@ -1,6 +1,8 @@
 <?php
 namespace Iannsp\Scenery;
-
+use Assert\Assertion;
+use \Iannsp\Scenery\RunStrategy\Factory;
+use \Iannsp\Scenery\RunStrategy\Strategy;
 class PessoaSample
 {
     public $data;
@@ -76,11 +78,10 @@ class SceneryTest extends \PHPUnit_Framework_TestCase
             assert('$pessoa->data[\'nome\']=="Ivo Nascimento"',"ahhhhhh");
         }
     );
-    $result = $scenery->run();
+    $result = $scenery->run(1);
     $this->assertTrue(is_array($result));
-    $this->assertArrayHasKey('cycles', $result);
-    $this->assertCount(1, $result['cycles']);
-    $this->assertArrayHasKey('data', $result['cycles'][0]);
+    $this->assertCount(1, $result);
+    $this->assertArrayHasKey('data', $result);
     }
     
     public function test_run_actions_lot_of_cycle()
@@ -104,15 +105,47 @@ class SceneryTest extends \PHPUnit_Framework_TestCase
           assert('$oldPessoaData[\'name\']."X"==$newPessoaData["name"]',"Nao esta seguindo a regra");
         }
     );
-    $result = $scenery->run(10);
+    $runnerStrategy = Factory::get(Strategy::RUN_BY_CYCLE_NUMBER,$scenery);
+    $result = $runnerStrategy->run(10);
     $this->assertTrue(is_array($result));
-    $this->assertArrayHasKey('cycles', $result);
-    $this->assertCount(10, $result['cycles']);
-    $this->assertArrayHasKey('data', $result['cycles'][0]);
-    $final = $result['cycles'][9]['data']->get(['person'=>[1]])['person'][1];
+    $this->assertCount(10, $result);
+    $this->assertArrayHasKey('data', $result[0]);
+    $final = $result[9]['data']->get(['person'=>[1]])['person'][1];
     $this->assertEquals($final['name'], "IvoXXXXXXXXXX");
     }
     
+    public function test_run_cycle_byDateTimeLimit()
+    {
+        $data = new Data();
+        $data->add([
+            'person'=>[
+                ["key"=>'1',['id'=>1,"name"=>'Ivo','email'=>'iannsp@gmail.com']]
+                ]
+        ]);
+        $scenery = new Scenery($data);
+        $scenery->action('Altera Uma Pessoa', function($state){
+           $pessoaData = $state['new']->get(['person'=>[1]])['person'][1];
+           $pessoa = new PessoaSample($pessoaData);
+           $pessoa->data['name'] = $pessoa->data['name']."X";
+           $pessoa->save($state['new']);
+        }, function($state){
+            $newPessoaData = $state['new']->get(['person'=>[1]])['person'][1];
+            $oldPessoaData = $state['old']->get(['person'=>[1]])['person'][1];
+            \Assert\that($newPessoaData['name'])->contains('IvoX');
+        }
+    );
+    
+    $rodarAte = new \Datetime();
+    $rodarAte->add(new \DateInterval("P0YT0M4S"));
+    $runnerStrategy = factory::get(Strategy::RUN_UNTILDATE,$scenery);
+    $result = $runnerStrategy->run(['until'=>$rodarAte,'by'=>1]);
+    $this->assertTrue(is_array($result));
+    $this->assertCount(4, $result);
+    $this->assertArrayHasKey('data', $result[0]);
+    $final = $result[3]['data']->get(['person'=>[1]])['person'][1];
+    $this->assertEquals($final['name'], "IvoXXXX");
+    }
 }
+    
 
 ?>
