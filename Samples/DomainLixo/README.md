@@ -16,7 +16,7 @@ Linguagem do Dominio
 * Lixo: Sacos contento material organico ou não que são dispensados por um morador.
 * Lixao: Local onde o lixo recolhido do Local de retirada é dispensado.
 
-####caso de estudo####
+[result]: https://github.com/iannsp/scenery/edit/master/Samples/DomainLixo/sample_result.png "Executando"
 
 
 
