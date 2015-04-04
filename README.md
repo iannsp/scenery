@@ -1,14 +1,12 @@
 # Iannsp\Scenery#
 
-* A gente devia ter duas vidas, uma pra ensaiar e outra para viver.
-
-* we should have two lives, one to assay and another to live.
-
-([Vittorio Gassman](http://pt.wikipedia.org/wiki/Vittorio_Gassman))
-
-#### O que é? ####
-
 *Scenery é uma **ferramenta de criação de cenários** para **testes de integração** e validação de expectativas nas camadas da **aplicação/domínio** e **infra estrutura** que permite **execuções ciclicas**(repetições do conjunto de ações) para simulações de **comportamento real** de uso.*
+
+
+####Inspiração####
+
+"A gente devia ter duas vidas, uma pra ensaiar e outra para viver." ([Vittorio Gassman](http://pt.wikipedia.org/wiki/Vittorio_Gassman))
+
 
 
 ### O que é um cenário (*Scenery*)? ###
