@@ -94,7 +94,7 @@ $data = [
 ```
 ####Exemplo de Cenário####
 
-Este cenário tem as seguintes caracteristicas
+Caracteristicas:
 * tem somente uma ação chamada *Criar Pessoa*.
 * sua estratégia de execução é por Número de Ciclos e sera executado 1 vez.
  
