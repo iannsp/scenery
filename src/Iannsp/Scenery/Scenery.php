@@ -21,14 +21,21 @@ class Scenery{
         ];
     }
     
-    public function run()
+    public function run($cycles=1)
     {
-        foreach($this->action as $actionItem){
-            $actionItem['action']();
-            $actionItem['expectedDomain']();
-            if (!is_null($actionItem['expectedRepository']))
-                $actionItem['expectedRepository']();
+        $result = ['cycles'=>[]];
+        for($i=0; $i<$cycles; $i++){
+            $state['cycle']= $i+1;
+            $state['new'] = $this->data;
+            foreach($this->action as $actionItem){
+                $state['old'] = clone $this->data;
+                $actionItem['action']($state);
+                $actionItem['expectedDomain']($state);
+                if (!is_null($actionItem['expectedRepository']))
+                    $actionItem['expectedRepository']($state);
+            }
+            $result['cycles'][$i]= ['data'=>$this->data];
         }
-        return ['data'=>$this->data];
+        return $result;
     }
 }
