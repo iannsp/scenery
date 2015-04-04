@@ -1,6 +1,6 @@
 <?php
 namespace Iannsp\Scenery;
-
+use Assert\Assertion;
 class Scenery{
     private $data;
     private $actions = [];
@@ -12,30 +12,27 @@ class Scenery{
     public function action($name, 
         callable $action, 
         callable $expectedDomain,
-        callable $expectedRepository= null)
+        callable $expectedInfraStructure= null)
     {
-        $this->action[$name] = [
+        $this->actions[$name] = [
             'action'=>$action,
             'expectedDomain'=>$expectedDomain,
-            'expectedRepository'=>$expectedRepository
+            'expectedInfraStructure'=>$expectedInfraStructure
         ];
     }
     
-    public function run($cycles=1)
+    public function run($cycleId)
     {
-        $result = ['cycles'=>[]];
-        for($i=0; $i<$cycles; $i++){
-            $state['cycle']= $i+1;
-            $state['new'] = $this->data;
-            foreach($this->action as $actionItem){
-                $state['old'] = clone $this->data;
-                $actionItem['action']($state);
-                $actionItem['expectedDomain']($state);
-                if (!is_null($actionItem['expectedRepository']))
-                    $actionItem['expectedRepository']($state);
-            }
-            $result['cycles'][$i]= ['data'=>$this->data];
+        $result = [];
+        $state['cycle']= $cycleId;
+        $state['new'] = $this->data;
+        foreach($this->actions as $actionItem){
+            $state['old'] = clone $this->data;
+            $actionItem['action']($state);
+            $actionItem['expectedDomain']($state);
+            if (!is_null($actionItem['expectedInfraStructure']))
+                $actionItem['expectedInfraStructure']($state);
         }
-        return $result;
+        return ['data'=>(clone $this->data)];
     }
 }
