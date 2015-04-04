@@ -1,6 +1,6 @@
 # Iannsp\Scenery#
 
-*Scenery é uma **ferramenta de criação de cenários** para **testes de integração** e validação de expectativas nas camadas da **aplicação/domínio** e **infra estrutura** que permite **execuções ciclicas**(repetições do conjunto de ações) para simulações de **comportamento real** de uso.*
+*Scenery é uma __ferramenta de criação de cenários__ para __testes de integração__ e validação de expectativas nas camadas da __aplicação/domínio__ e __infra estrutura__ que permite __execuções ciclicas__(repetições do conjunto de ações) para simulações de __comportamento real__ de uso.*
 
 
 ####Inspiração####
