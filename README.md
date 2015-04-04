@@ -10,13 +10,6 @@
 
 *Scenery é uma **ferramenta de criação de cenários** para **testes de integração** e validação de expectativas nas camadas da **aplicação/domínio** e **infra estrutura** que permite **execuções ciclicas**(repetições do conjunto de ações) para simulações de **comportamento real** de uso.*
 
-Em um dominio existem ações a serem tomadas e os reflexos esperados dessas ações.
-
-O reflexo das ações são esperados como mudanças no estado da aplicação que 
-podem ser verificados atraves do estado dos dados e o estado do dominio. 
-Essas verificações são a expectativa de mudança do arquiteto/desenvolvedor no 
-momento em que ele modela o dominio.
-
 
 ### O que é um cenário (*Scenery*)? ###
 
