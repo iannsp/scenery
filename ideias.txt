@@ -5,3 +5,35 @@ para sql mysql, postgresql, doctrine(pesquisei e nao ache o mapper para escrever
 
 
     rodar o mesmo cenario em threads diferentes para que compitam pelos recursos e vejam distribuicao do cenario.
+
+
+
+
+    No final Scenery::run devolve a estrutura de dados afetada pela acoes.
+    devolve tambem um relatorio de estado para cada loop de execucao das acoes de estado final.
+
+    Os asserts devem ser simples.
+    
+    Pode ser criado um loop infinito para manter o softare em teste constante, e alertas
+    para adicionar um novo teste basta abrir um terminal digitar scenery-snapshot e pegar esse snapshp e testar com a nova acao.
+    para adicionar a nova acao de cenario eh so scenery-add-action actionFile.php que a action sera adicionada no llop.
+    
+    O software de teste rodaria para sempre, mesmo com os erros(se o programador quisesse)
+    
+
+    Scenery é uma proposta
+    
+    Scenery utiliza Asserts
+    assert_options(ASSERT_ACTIVE, 1);
+    assert_options(ASSERT_WARNING, 0);
+    assert_options(ASSERT_QUIET_EVAL, 1);
+    function my_assert_handler($file, $line, $code)
+    {
+        echo "<hr>Afirmação falhou:
+            Arquivo '$file'<br />
+            Linha '$line'<br />
+            Código '$code'<br /><hr />";
+    }
+    // Define a função
+    assert_options(ASSERT_CALLBACK, 'my_assert_handler');
+    
