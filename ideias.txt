@@ -1,0 +1,7 @@
+escrever uma pdo para array e um parse sql para array, ou achar isso em algum lugar
+gostaria de manter um ambiente rodando em arrays quanto aos dados mas gostaria que
+a pessoa nao precisasse se preocupar com isso, pq normalmente sua implementacao vai ser
+para sql mysql, postgresql, doctrine(pesquisei e nao ache o mapper para escrever e ler em array)
+
+
+    rodar o mesmo cenario em threads diferentes para que compitam pelos recursos e vejam distribuicao do cenario.
