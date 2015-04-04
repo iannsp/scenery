@@ -1,0 +1,15 @@
+{
+    "name": "iannsp/scenery",
+    "description": "we should have two lives, one to train and another to live",
+    "authors": [
+        {
+            "name": "Ivo Nascimento",
+            "email": "iannsp@gmail.com"
+        }
+    ],
+    "require": {
+    }
+    ,"autoload": {
+        "psr-0": {"": "src/"}
+    }    
+}

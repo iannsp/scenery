@@ -1,0 +1,14 @@
+<phpunit bootstrap="bootstrap.php">
+  <testsuites>
+    <testsuite name="we should have two lives, one to train and another to live (A software)">
+      <directory>tests</directory>
+    </testsuite>
+  </testsuites>
+     <filter>
+        <logging>
+            <log type="coverage-html" target="./build" charset="UTF-8" yui="true" highlight="true" lowUpperBound="50" highLowerBound="80" />
+            <log type="testdox" target="./build/testdox.html" />    
+            <log type="coverage-text" target="build/coverage.txt"/>
+        </logging>
+     </filter>
+</phpunit>

@@ -1,0 +1,4 @@
+dominio do lixo
+    um dominio criado para o ambiente de uma rua onde as pessoas tiram o lixo de casa
+    e um cara que vende o servico de tirar o lixo.
+    
