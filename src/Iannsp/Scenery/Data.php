@@ -6,7 +6,7 @@ class Data
     private $data=[];
     public function __construct(array $initialStructure=[])
     {
-        $this->data = [];
+        $this->add($initialStructure);
     }
     public function add(array $structure)
     {
@@ -18,13 +18,17 @@ class Data
                 if (!array_key_exists($model, $this->data)){
                     $this->data[$model] = [];
                 }
+                if(is_null($key))
+                    $this->data[$model][]=$valueInKey;
+                else
                 $this->data[$model][$key]=$valueInKey;
             }
         }
     }
-    public function get()
+    public function get(array $strucutre=[])
     {
-        return $this->data;
+        if (!count($strucutre))
+            return $this->data;
     }
 
 }    

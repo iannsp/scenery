@@ -26,5 +26,39 @@ class DataTest extends \PHPUnit_Framework_TestCase
         ],
         $array);
     }
-    
+
+    public function test_add_not_id()
+    {
+        $dados = [
+            'nome'=>
+            [
+                [['nome'=>'ivo nascimento',"email"=>"iannsp@gmail.com"]]
+            ]
+        ];
+        $expected = [
+            'nome'=>[
+                ['nome'=>'ivo nascimento',"email"=>"iannsp@gmail.com"]
+            ]
+        ];
+        $data = new Data();
+        $data->add($dados);
+        $this->AssertEquals($expected, $data->get());
+    }
+    public function test_init()
+    {
+        $dados = [
+            'nome'=>
+            [
+                [['nome'=>'ivo nascimento',"email"=>"iannsp@gmail.com"]]
+            ]
+        ];
+        $expected = [
+            'nome'=>[
+                ['nome'=>'ivo nascimento',"email"=>"iannsp@gmail.com"]
+            ]
+        ];
+        $data = new Data($dados);
+        $this->AssertEquals($expected, $data->get());
+    }
+
 }
