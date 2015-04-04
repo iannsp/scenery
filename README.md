@@ -57,7 +57,7 @@ características de uma Action:
     $scenery->action([Nome da Action], $action);
 ```
 
-### O que é uma Expectativa(*Expectation*)? ###
+### Expectation ###
 
 Expectativa é uma verificação dos efeitos relacionados a execução de uma ação. 
 
