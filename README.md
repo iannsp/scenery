@@ -34,13 +34,13 @@ Action é um **comportamento** existente em um **Domínio** cujo **efeito** pode
 características de uma Action:
 
 * uma Action tem um estado composto por
- ** estado dos Dados
-   *** New: Os dados no estado atual do cenário.
-   *** Old: Os dados no estado anterior a execução da Action.
+     * estado dos Dados
+         * New: Os dados no estado atual do cenário.
+         * Old: Os dados no estado anterior a execução da Action.
 
 * transienteData: Dados temporários no escopo da ação e suas expectativas:
- ** Cycle: O número identificador do ciclo de execução em que esta o cenário.
- ** udd: user defined data. Dados transientes definidos pela action necessários para sua execução e/ou teste de expectativas. 
+    * Cycle: O número identificador do ciclo de execução em que esta o cenário.
+    * udd: user defined data. Dados transientes definidos pela action necessários para sua execução e/ou teste de expectativas. 
  
 ####Criando uma ação####
 
