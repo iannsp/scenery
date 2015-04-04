@@ -10,8 +10,7 @@ class SceneryTest extends \PHPUnit_Framework_TestCase
     
     public function test_init_data_model()
     {
-        Scenery::initData([]);
-        
+        Scenery::initData(new Data([]));
     }
 }
 

@@ -12,7 +12,21 @@ class DataTest extends \PHPUnit_Framework_TestCase
     {
         $data = new Data();
         $data->add([
-            'person'=>['id'=>1,"name"=>'Ivo','email'=>'iannsp@gmail.com']
+            'person'=>[
+                ["key"=>'1',['id'=>1,"name"=>'Ivo','email'=>'iannsp@gmail.com']]
+                ]
         ]);
+        $array = $data->get();
+        $this->assertEquals(
+        [
+            'person'=>
+                [
+                    '1'=>['id'=>1,"name"=>'Ivo','email'=>'iannsp@gmail.com']
+                ]
+        ],
+        $array);
     }
+    
+    
+    
 }
