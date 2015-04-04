@@ -132,11 +132,11 @@ require 'bootstrap.php';
     $runnerStrategy = factory::get(Strategy::RUN_BY_CYCLE_NUMBER,$scenery);
     $results = $runnerStrategy->run(1);
     
-    //executando o cenário durante meia hora.
+    //executando o cenário durante meia hora com intervalo(by) de 1 segundo entre cada iteracao.
     $executarDuranteMeiaHora = new \Datetime();
     $executarDuranteMeiaHora->add(new \DateInterval("P0YT30M0S"));
     $runnerStrategy = factory::get(Strategy::RUN_UNTILDATE,$scenery);
-    $results = $runnerStrategy->run($executarDuranteMeiaHora);
+    $results = $runnerStrategy->run(['until'=>$executarDuranteMeiaHora,'by'=>1]);
 ```
 
     
