@@ -45,11 +45,11 @@ características de uma Action:
 
 ```php
     $action = function($state){
-            // codigo de execução do comportamento a ser testado no domínio ou aplicação. 
+            // comportamento do domínio ou aplicação. 
         }, function($state){
-            // código de teste de expectativa utilizando código do domínio.
+            // expectativa do domínio.
         }, function ($state){
-            // código de teste de expectativa utilizando recursos de código de infra estrutura.
+            // expectativa na infra estrutura.
         }
     );
     // adicionando a action em um cenário.
