@@ -134,7 +134,7 @@ require 'bootstrap.php';
     //executando o cenário durante meia hora.
     $executarDuranteMeiaHora = new \Datetime();
     $executarDuranteMeiaHora->add(new \DateInterval("P0YT30M0S"));
-    $result = $scenery->runUntil($executarDuranteMeiaHora);
+    $result = $scenery->run(Scenery::RUN_UNTILDATE, $executarDuranteMeiaHora);
 ```
 
     
