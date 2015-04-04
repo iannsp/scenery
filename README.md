@@ -130,6 +130,11 @@ require 'bootstrap.php';
     
     // executando o cenário com uma estratégia de execucaçnao por número de ciclos.
     $results = $scenery->run(Scenery::RUN_BY_CYCLE_NUMBER,1);
+    
+    //executando o cenário durante meia hora.
+    $executarDuranteMeiaHora = new \Datetime();
+    $executarDuranteMeiaHora->add(new \DateInterval("P0YT30M0S"));
+    $result = $scenery->runUntil($executarDuranteMeiaHora);
 ```
 
     
