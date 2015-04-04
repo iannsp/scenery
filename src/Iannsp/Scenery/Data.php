@@ -29,6 +29,23 @@ class Data
     {
         if (!count($strucutre))
             return $this->data;
+        $result = [];
+        
+        foreach ($strucutre as $model=>$lookFor){
+            if(!array_key_exists($model, $result))
+                $result[$model] = [];
+            if (!count($lookFor)){
+                $result[$model]= $this->data[$model];
+            }
+
+            foreach ($lookFor as $item)
+            {
+                if (array_key_exists($item, $this->data[$model]))
+                    $result[$model][$item] = $this->data[$model][$item];
+            }
+        }
+        return $result;
+            
     }
 
 }    
