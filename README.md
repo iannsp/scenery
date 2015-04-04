@@ -1,8 +1,13 @@
 # Iannsp\Scenery#
 
-we should have two lives, one to train and another to live
+* A gente devia ter duas vidas, uma pra ensaiar e outra para viver.
 
-### Objetivo ###
+* we should have two lives, one to assay and another to live.
+
+([Vittorio Gassman](http://pt.wikipedia.org/wiki/Vittorio_Gassman))
+
+### So What? ###
+
 
 Em um dominio existem ações a serem tomadas e os reflexos esperados dessas ações.
 
@@ -12,7 +17,65 @@ e o estado do dominio. Essas verificações são a expectativa de mudança do
 arquiteto/desenvolvedor no momento em que ele modela o dominio.
 
 Scenery, ou simplesmente, cenário, é uma ferramenta para criar um ambiente de teste 
-de expectativas nas camadas de uma aplicação do domínio.
+de expectativas nas camadas da aplicação de um domínio.
+
+### O que é um cenário (*Scenery*)? ###
+
+Um cenário é uma *configuração de ambiente para execução* e teste de *expectativas* de um conjunto de *Ações*. 
+
+As caracteristicas de um cenário são:
+
+* Conjunto inicial de dados.
+* Conjunto de ações.
+* Modelo de execução. 
+
+####Criando um cenário####
+
+```php
+   $initialDataState = new [Data](https://github.com/iannsp/scenery/blob/master/src/Iannsp/Scenery/Data.php)();
+   $scenery = new [Scenery]((https://github.com/iannsp/scenery/blob/master/src/Iannsp/Scenery/Scenery.php))($initialDataState); 
+```
+
+
+### O que é uma Ação(*Action*)? ###
+
+Action é um comportamento existente num Domínio cujos efeitos podem ser testados através das expectativas.
+
+características de uma Action:
+
+* uma Action tem um estado composto por
+ * estado dos Dados
+   * New: Os dados no estado atual do cenário.
+   * Old: Os dados no estado anterior a execução da Action.
+ * transienteData: Dados temporários disponíveis durante a execução de uma ação e suas expectativas:
+   * Cycle: O número identificador do ciclo de execução em que esta o cenário.
+   * udd: user defined data. Dados transientes definidos pela action necessários para sua execução e/ou teste de expectativas. 
+ 
+####Criando uma ação####
+
+```php
+    $action = function($state){
+            // codigo de execução do comportamento a ser testado no domínio ou aplicação. 
+        }, function($state){
+            // código de teste de expectativa utilizando código do domínio.
+        }, function ($state){
+            // código de teste de expectativa utilizando recursos de código de infra estrutura.
+        }
+    );
+    // adicionando a action em um cenário.
+    $scenery->action([Nome da Action], $action);
+```
+
+### O que é uma Expectativa(*Expectation*)? ###
+
+Expectativa é uma verificação dos efeitos relacionados a execução de uma ação. 
+
+Caracteristicas de uma expectativa:
+* São dois tipos de expectativa.
+ * layer de Domínio (expectedDomain): utiliza código de domínio para validar a Action.
+ * layer de infra estrutura (expectedInfraStructure): utiliza recursos de infra estrutura para validar a Action.
+* cada tipo de expectativa tem seu conjunto de assertions. 
+ 
 
 # Estado dos Dados #
 
@@ -123,3 +186,5 @@ require 'bootstrap.php';
     }
     // Define a função
     assert_options(ASSERT_CALLBACK, 'my_assert_handler');
+    
+    
