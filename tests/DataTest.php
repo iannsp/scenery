@@ -5,90 +5,79 @@ class DataTest extends \PHPUnit_Framework_TestCase
 {
     public function assertPreConditions()
     {
-        $this->assertTrue(class_exists('Iannsp\Scenery\Data'));
-    }
-    
-    public function test_add()
-    {
-        $data = new Data();
-        $data->add([
-            'person'=>[
-                ["key"=>'1',['id'=>1,"name"=>'Ivo','email'=>'iannsp@gmail.com']]
-                ]
-        ]);
-        $array = $data->get();
-        $this->assertEquals(
-        [
-            'person'=>
-                [
-                    '1'=>['id'=>1,"name"=>'Ivo','email'=>'iannsp@gmail.com']
-                ]
-        ],
-        $array);
+        $this->assertTrue(class_exists(Data::class));
     }
 
-    public function test_add_not_id()
+    /**
+     * @test
+     */
+    public function add()
     {
-        $dados = [
-            'nome'=>
-            [
-                [['nome'=>'ivo nascimento',"email"=>"iannsp@gmail.com"]]
-            ]
-        ];
-        $expected = [
-            'nome'=>[
-                ['nome'=>'ivo nascimento',"email"=>"iannsp@gmail.com"]
-            ]
-        ];
+        $item = ['id' => 1, "name" => 'Ivo', 'email' => 'iannsp@gmail.com'];
+
         $data = new Data();
-        $data->add($dados);
-        $this->AssertEquals($expected, $data->get());
-    }
-    public function test_init()
-    {
-        $dados = [
-            'nome'=>
-            [
-                [['nome'=>'ivo nascimento',"email"=>"iannsp@gmail.com"]]
-            ]
-        ];
-        $expected = [
-            'nome'=>[
-                ['nome'=>'ivo nascimento',"email"=>"iannsp@gmail.com"]
-            ]
-        ];
-        $data = new Data($dados);
-        $this->AssertEquals($expected, $data->get());
+        $data->add(['person' => [["key" => '1', $item]]]);
+
+        $this->assertEquals(['person' => ['1' => $item]], $data->get());
     }
 
-    public function test_get_item_by_model_without_item_definition()
+    /**
+     * @test
+     */
+    public function addNotId()
     {
-        $dados = [
-            'nome'=>
-            [
-                [['nome'=>'ivo nascimento',"email"=>"iannsp@gmail.com"]]
+        $item = ['nome' => 'ivo nascimento', 'email' => 'iannsp@gmail.com'];
+
+        $data = new Data();
+        $data->add(['nome' => [[$item]]]);
+
+        $this->assertEquals(['nome' => [$item]], $data->get());
+    }
+
+    /**
+     * @test
+     */
+    public function init()
+    {
+        $item = ['nome' => 'ivo nascimento', 'email' => 'iannsp@gmail.com'];
+
+        $data = new Data(['nome' => [[$item]]]);
+        $this->assertEquals(['nome' => [$item]], $data->get());
+    }
+
+    /**
+     * @test
+     */
+    public function getItemByModelWithoutItemDefinition()
+    {
+        $item = ['nome' => 'ivo nascimento', 'email' => 'iannsp@gmail.com'];
+
+        $data = new Data(['nome' => [[$item]]]);
+
+        $this->assertEquals(['nome' => [$item]], $data->get(['nome' => []]));
+    }
+
+    /**
+     * @test
+     */
+    public function getById()
+    {
+        $item1 = ['nome' => 'lala', 'email' => 'lala@gmail.com'];
+        $item2 = ['id' => 1, 'nome' => 'ivo nascimento', 'email' => 'iannsp@gmail.com'];
+
+        $input = [
+            'person' => [[$item1], ['key' => '1', $item2]]
+        ];
+
+        $expected = [
+            'person' => [
+                0 => $item1,
+                1 => $item2
             ]
         ];
-        $expected = ['nome'=>[['nome'=>'ivo nascimento',"email"=>"iannsp@gmail.com"]]];
-        $data = new Data($dados);
-        $this->AssertEquals($expected, $data->get(['nome'=>[]]));
-    }
-    
-    public function test_get_by_id()
-    {
-        $dados = [
-            'person'=>[
-                [           ['nome'=>'lala',"email"=>"lala@gmail.com"]],
-                ["key"=>'1',['id'=>1,"name"=>'Ivo','email'=>'iannsp@gmail.com']]
-                ]
-        ];
-        $expected = [
-            'person'=>[
-                0=>['nome'=>'lala',"email"=>"lala@gmail.com"],
-                1=>['id'=>1,"name"=>'Ivo','email'=>'iannsp@gmail.com']]
-                ];
-        $data = new Data($dados);
-        $this->AssertEquals($expected, $data->get(['person'=>[0,1]]));
-        
+
+        $data = new Data($input);
+
+        $this->assertEquals($expected, $data->get(['person' => [0, 1]]));
     }
 }

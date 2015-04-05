@@ -1,39 +1,61 @@
 <?php
 namespace Iannsp\Scenery\RunStrategy;
+
+use DateTime;
 use Iannsp\Scenery\Scenery;
 
-class ByUntilDate implements Strategy{
+class ByUntilDate implements Strategy
+{
+    /**
+     * @var Scenery
+     */
     private $scenery;
+
     private $cycleCollection = [];
+
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(Scenery $scenery)
     {
         $this->scenery = $scenery;
     }
-    public function run($rule)
+
+    /**
+     * {@inheritdoc}
+     */
+    public function run(array $rule)
     {
+        if (!$rule['until'] instanceof DateTime || !is_numeric($rule['by'])) {
+            throw new InsufficientParametersException(
+                "rule for run BYUntilDate Strategy is [\\DateTime until, numeric by]"
+            );
+        }
+
         $result = [];
-        if (! $rule['until'] instanceOf \DateTime || !is_numeric($rule['by']))
-            throw new \Exception("rule for run BYUntilDate Strategy is [\\Datetime until, numeric by]");
         $untilDate = $rule['until'];
-        $idOfCycle = 0;
+        $cycleId = 0;
 
-        $now = new \DateTime();
+        $now = new DateTime();
 
-        $diff = (int)$untilDate->format('U') - (int)$now->format("U");
-        while($diff>0){
-            $result[$idOfCycle] = $this->scenery->run($idOfCycle, $rule['loud']);
-            $idOfCycle++;
+        $diff = (int) $untilDate->format('U') - (int) $now->format("U");
+
+        while ($diff > 0) {
+            $result[$cycleId] = $this->scenery->run($cycleId, $rule['loud']);
+            ++$cycleId;
+
             usleep(1000000 * $rule['by']);
-            if($rule['loud']){
+
+            if ($rule['loud']) {
                 ob_start();
-                echo "cycle of {$diff}seconds\n";
+                echo "cycle of {$diff} seconds\n";
                 ob_end_flush();
             }
-            $now = new \DateTime();
-            $diff = (int)$untilDate->format('U') - (int)$now->format("U");
+
+            $now = new DateTime();
+            $diff = (int) $untilDate->format('U') - (int) $now->format("U");
         }
+
         return $result;
     }
-
-
 }

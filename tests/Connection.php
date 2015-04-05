@@ -20,6 +20,6 @@ trait Connection
             create table person(id integer primary key, name CHARACTER(100), email CHARACTER(100))'
         );
         $this->pdo->exec("insert into person (name, email) values ('Ivo','iannsp@gmail.com')");
-        $this->pdo->newFromDsn = new \PDO( $dsn, null, null, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
+        $this->pdo->newFromDsn = new \PDO($dsn, null, null, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
     }
 }
