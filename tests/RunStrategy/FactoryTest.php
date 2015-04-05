@@ -1,56 +1,81 @@
 <?php
 namespace Iannsp\Scenery\RunStrategy;
+
+use DateTime;
 use Iannsp\Scenery\Scenery;
-use Iannsp\Scenery\Data;
-use Assert\Assertion;
 use Iannsp\Scenery\Connection;
 
 class FactoryTest extends \PHPUnit_Framework_TestCase
 {
     use Connection;
 
-    public function test_get_instance_of_Strategy_ByCycleNumber()
+    /**
+     * @test
+     */
+    public function getInstanceOfStrategyByCycleNumber()
     {
-        $scenery = new Scenery($this->pdo);
-        $runnerStrategy = Factory::get(Strategy::RUN_BY_CYCLE_NUMBER,$scenery);
-        $this->assertInstanceOf(
-            "\\Iannsp\\Scenery\\RunStrategy\\ByCycleNumber",
-            $runnerStrategy);
+        $strategy = $this->createStrategy(Strategy::RUN_BY_CYCLE_NUMBER);
+
+        $this->assertInstanceOf(ByCycleNumber::class, $strategy);
     }
 
     /**
-     * @expectedException Exception
-     * @expectedExceptionMessage Strategy Strategy_Invalid does not supported
+     * @test
+     *
+     * @expectedException \Iannsp\Scenery\RunStrategy\UnsupportedStrategyException
+     * @expectedExceptionMessage Strategy Strategy_Invalid is not supported
      */
-    public function test_get_instance_of_Strategy_Invalid()
+    public function getInstanceOfStrategyInvalid()
     {
-        $scenery = new Scenery($this->pdo);
-        $runnerStrategy = Factory::get('Strategy_Invalid',$scenery);
+        $this->createStrategy('Strategy_Invalid');
     }
 
-    public function test_run_Strategy_ByCycleNumber()
+    /**
+     * @test
+     */
+    public function runStrategyByCycleNumber()
     {
-        $scenery = new Scenery($this->pdo);
-        $runnerStrategy = Factory::get(Strategy::RUN_BY_CYCLE_NUMBER,$scenery);
-        $this->assertInstanceOf(
-            "\\Iannsp\\Scenery\\RunStrategy\\ByCycleNumber",
-            $runnerStrategy);
-            $result = $runnerStrategy->run(['cycles'=>1, 'loud'=>false]);
+        $strategy = $this->createStrategy(Strategy::RUN_BY_CYCLE_NUMBER);
+        $this->assertInstanceOf(ByCycleNumber::class, $strategy);
+
+        $result = $strategy->run(
+            [
+                'cycles' => 1,
+                'loud' => false
+            ]
+        );
+
         $this->assertCount(1, $result);
     }
 
-    public function test_run_Strategy_ByUntilDate()
+    /**
+     * @test
+     */
+    public function runStrategyByUntilDate()
+    {
+        $strategy = $this->createStrategy(Strategy::RUN_UNTILDATE);
+        $this->assertInstanceOf(ByUntilDate::class, $strategy);
+
+        $result = $strategy->run(
+            [
+                'until' => new DateTime('+2 seconds'),
+                'by' => 1,
+                'loud' => false
+            ]
+        );
+
+        $this->assertCount(2, $result);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return Strategy
+     */
+    private function createStrategy($name)
     {
         $scenery = new Scenery($this->pdo);
-        $runnerStrategy = Factory::get(Strategy::RUN_UNTILDATE,$scenery);
-        $this->assertInstanceOf(
-            "\\Iannsp\\Scenery\\RunStrategy\\ByUntilDate",
-            $runnerStrategy);
 
-        $rodarAte = new \DateTime();
-        $rodarAte->add(new \DateInterval("P0YT0M2S"));
-
-        $result = $runnerStrategy->run(['until'=>$rodarAte,'by'=>1,'loud'=>false]);
-        $this->assertCount(2, $result);
+        return Factory::get($name, $scenery);
     }
 }

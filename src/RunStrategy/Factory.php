@@ -1,25 +1,46 @@
 <?php
 namespace Iannsp\Scenery\RunStrategy;
+
 use Iannsp\Scenery\Scenery;
 
 class Factory
 {
     /**
-     * @param unknown $strategyName
+     * @param string $name
      * @param Scenery $scenery
-     * @throws \Exception
+     *
      * @return Strategy
+     *
+     * @throws UnsupportedStrategyException
      */
-    public static function get($strategyName, Scenery $scenery){
-        if (!self::isValidStrategy($strategyName))
-            throw new \Exception("Strategy {$strategyName} does not supported");
-        $strategy = "\\Iannsp\\Scenery\\RunStrategy\\{$strategyName}";
+    public static function get($name, Scenery $scenery)
+    {
+        $strategy = self::getClass($name);
+
+        if (!self::isValidStrategy($strategy)) {
+            throw new UnsupportedStrategyException("Strategy {$name} is not supported");
+        }
+
         return new $strategy($scenery);
     }
 
-    private static function isValidStrategy($strategyName)
+    /**
+     * @param string $strategy
+     *
+     * @return bool
+     */
+    private static function isValidStrategy($strategy)
     {
-        $strategy = "\\Iannsp\\Scenery\\RunStrategy\\{$strategyName}";
-        return  class_exists($strategy);
+        return class_exists($strategy);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return string
+     */
+    private static function getClass($name)
+    {
+        return __NAMESPACE__ . '\\' . $name;
     }
 }

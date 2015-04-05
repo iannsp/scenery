@@ -1,30 +1,42 @@
 <?php
 namespace Iannsp\Scenery\RunStrategy;
+
 use Iannsp\Scenery\Scenery;
 
-class ByCycleNumber implements Strategy{
+class ByCycleNumber implements Strategy
+{
     private $scenery;
     private $cycleCollection = [];
+
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(Scenery $scenery)
     {
         $this->scenery = $scenery;
     }
-    public function run($rule)
-    {
-        $result = [];
-        //['cycles'=>1, 'loud'=>false]
-        if (!is_int($rule['cycles']))
-            throw new \Exception("rule for run ByCycleNumber Strategy is int totalOfCycles");
-        $totalOfCyCles = $rule['cycles'];
-        $idOfCycle = 0;
 
-        while ($idOfCycle < $rule['cycles']){
-            $result[$idOfCycle] =
-                $this->scenery->run($idOfCycle);
-            $idOfCycle++;
+    /**
+     * {@inheritdoc}
+     */
+    public function run(array $rule)
+    {
+        if (!is_int($rule['cycles'])) { // ['cycles'=>1, 'loud'=>false]
+            throw new InsufficientParametersException(
+                "rule for run ByCycleNumber Strategy is int totalOfCycles"
+            );
         }
+
+        $result = [];
+
+        $cycleId = 0;
+
+        while ($cycleId < $rule['cycles']) {
+            $result[$cycleId] = $this->scenery->run($cycleId);
+
+            ++$cycleId;
+        }
+
         return $result;
     }
-
-
 }
