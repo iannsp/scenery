@@ -8,9 +8,9 @@ class Scenery{
     {
         $this->data = $initData;
     }
-    
-    public function action($name, 
-        callable $action, 
+
+    public function action($name,
+        callable $action,
         callable $expectedDomain,
         callable $expectedInfraStructure= null)
     {
@@ -20,7 +20,7 @@ class Scenery{
             'expectedInfraStructure'=>$expectedInfraStructure
         ];
     }
-    
+
     public function run($cycleId, $loud=false)
     {
         $state  = new \StdClass();

@@ -4,6 +4,12 @@ use Iannsp\Scenery\Scenery;
 
 class Factory
 {
+    /**
+     * @param unknown $strategyName
+     * @param Scenery $scenery
+     * @throws \Exception
+     * @return Strategy
+     */
     public static function get($strategyName, Scenery $scenery){
         if (!self::isValidStrategy($strategyName))
             throw new \Exception("Strategy {$strategyName} does not supported");

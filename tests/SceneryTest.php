@@ -10,7 +10,7 @@ class PessoaSample
     {
         $this->data = $data;
     }
-    public function save(\Pdo $pdo)
+    public function save(\PDO $pdo)
     {
         $result = $pdo->query("select count(id) from person where id={$this->data['id']}", \PDO::FETCH_ASSOC);
         $exist = $result->fetchAll()[0];
@@ -30,29 +30,18 @@ class PessoaSample
 
 class SceneryTest extends \PHPUnit_Framework_TestCase
 {
-    private $pdo;
-    public function setUp()
-    {
-        $dsn ='sqlite:/tmp/sceneryTest.sq3';
-        $this->pdo = new \PDO( $dsn);
-        $this->pdo->exec('
-        drop table person; 
-        create table person(id integer primary key, name CHARACTER(100), email CHARACTER(100))');
-        $this->pdo->exec("insert into person (name, email) values ('Ivo','iannsp@gmail.com')");
-        $this->pdo->newFromDsn = new \PDO( $dsn);
-    }
-    
-    
+    use Connection;
+
     public function assertPreConditions()
     {
         $this->assertTrue(class_exists('Iannsp\Scenery\Scenery'));
     }
-    
+
     public function test_init_data_model()
     {
         $scenery = new Scenery($this->pdo);
     }
-    
+
     public function test_add_action()
     {
         $scenery = new Scenery($this->pdo);
@@ -70,9 +59,9 @@ class SceneryTest extends \PHPUnit_Framework_TestCase
             assert('$pessoa->data[\'name\']=="Ivo Nascimento"',"ahhhhhh");
         }
     );
-    
+
     }
-    
+
     public function test_run_actions()
     {
         assert_options(ASSERT_ACTIVE, 1);
@@ -96,12 +85,13 @@ class SceneryTest extends \PHPUnit_Framework_TestCase
     $this->assertTrue(is_array($result));
     $this->assertCount(1, $result);
 }
-    
+
     public function test_run_actions_lot_of_cycle()
     {
         $scenery = new Scenery($this->pdo);
+
         $scenery->action('Altera Uma Pessoa', function($state){
-           $pessoaData = PessoaSample:: find($state->new, 1);
+           $pessoaData = PessoaSample::find($state->new, 1);
            $pessoa = new PessoaSample($pessoaData);
            $pessoa->data['name'] = $pessoa->data['name']."X";
            $pessoa->save($state->new);
@@ -118,7 +108,7 @@ class SceneryTest extends \PHPUnit_Framework_TestCase
     $final = PessoaSample:: find($this->pdo, 1);
     $this->assertEquals($final['name'], "IvoXXXXXXXXXX");
     }
-    
+
     public function test_run_cycle_byDateTimeLimit()
     {
         $scenery = new Scenery($this->pdo);
@@ -136,18 +126,18 @@ class SceneryTest extends \PHPUnit_Framework_TestCase
             \Assert\that($newPessoaData['name'])->contains('IvoX');
         }
     );
-    
-    $rodarAte = new \Datetime();
+
+    $rodarAte = new \DateTime();
     $rodarAte->add(new \DateInterval("P0YT0M4S"));
-    $runnerStrategy = factory::get(Strategy::RUN_UNTILDATE,$scenery);
+    $runnerStrategy = Factory::get(Strategy::RUN_UNTILDATE,$scenery);
     $result = $runnerStrategy->run(['until'=>$rodarAte,'by'=>1,'loud'=>false]);
     $this->assertTrue(is_array($result));
     $this->assertCount(4, $result);
-    var_dump($result);
+
     $final = PessoaSample:: find($this->pdo, 1);
     $this->assertEquals($final['name'], "IvoXXXX");
     }
 }
-    
+
 
 ?>

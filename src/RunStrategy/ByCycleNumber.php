@@ -17,14 +17,14 @@ class ByCycleNumber implements Strategy{
             throw new \Exception("rule for run ByCycleNumber Strategy is int totalOfCycles");
         $totalOfCyCles = $rule['cycles'];
         $idOfCycle = 0;
-        
+
         while ($idOfCycle < $rule['cycles']){
-            $result[$idOfCycle] = 
+            $result[$idOfCycle] =
                 $this->scenery->run($idOfCycle);
             $idOfCycle++;
         }
         return $result;
     }
-    
-    
+
+
 }
