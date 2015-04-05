@@ -18,13 +18,16 @@ class ByUntilDate implements Strategy{
         $idOfCycle = 0;
         
         $now = new \DateTime();
-        $diff = (int)$now->diff($untilDate)->format('%s');
+        
+        $diff = (int)$untilDate->format('U') - (int)$now->format("U");
         while($diff>0){
             $result[$idOfCycle] = $this->scenery->run($idOfCycle);
             $idOfCycle++;
             usleep(1000000 * $rule['by']);
+            echo "cycle of {$diff}seconds\n";
+            flush();
             $now = new \DateTime();
-            $diff = (int)$now->diff($untilDate)->format('%s');
+            $diff = (int)$untilDate->format('U') - (int)$now->format("U");
         }
         return $result;
     }
