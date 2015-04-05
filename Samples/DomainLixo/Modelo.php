@@ -93,15 +93,36 @@ class Lixao
     }
 }
 
+class LixoRepository
+{
+    private $pdo;
+    public function __construct($pdo)
+    {
+        $this->pdo = $pdo;
+    }
+    public function find($id)
+    {
+        $r = $this->pdo->query("select * from sistemaDeLixo where id={$id}", \PDO::FETCH_ASSOC);
+      $dados = $r->fetchAll();
+      return $dados[0];
+    }
+    public function save(array $data)
+    {
+        $r = $this->pdo->exec("update sistemaDeLixo set localDeRetirada={$data['localDeRetirada']}, Lixao={$data['Lixao']} where id={$data['id']}");
+        
+    }
+}
 class ServicoDeLixo
 {
     private $dataStructure;
     private $localDeRetirada;
     private $lixao;
+    private $repository;
     public function __construct($dataStructure)
     {
         $this->dataStructure = $dataStructure;
-        $initialState = $this->dataStructure->get()['sistemaDeLixo'][1];
+        $this->repository = new LixoRepository($dataStructure);
+        $initialState = $this->repository->find(1);
         $this->localDeRetirada = new LocalDeRetirada($initialState['localDeRetirada']);
         $this->lixao           = new Lixao($initialState['Lixao']);
     }
@@ -131,9 +152,16 @@ class ServicoDeLixo
     }
     private function persist()
     {
-        $dadosAtuais = $this->dataStructure->get(['sistemaDeLixo'=>[1]]);
-        $quantoTemlocal = $dadosAtuais['sistemaDeLixo'][1]['localDeRetirada'];
-        $quantoTemLixao = $dadosAtuais['sistemaDeLixo'][1]['Lixao'];
+        $dadosAtuais = $this->repository->find(1);
+        $quantoTemlocal = $dadosAtuais['localDeRetirada'];
+        $quantoTemLixao = $dadosAtuais['Lixao'];
+        $this->repository->save(
+        [
+            'id'=>1,
+            'localDeRetirada'=>$this->localDeRetirada->quantoLixoTem(), 
+            'Lixao'=>$this->lixao->quantoLixoTem()
+        ]);
+/*
         $this->dataStructure->add(
         [
             'sistemaDeLixo'=>
@@ -145,6 +173,7 @@ class ServicoDeLixo
             ]
         ]
         );
+*/
         
     }
     public function getInfo()
