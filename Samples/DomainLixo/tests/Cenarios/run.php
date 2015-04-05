@@ -28,21 +28,21 @@ $pdo->newFromDsn = new \PDO( $dsn);
 
     $scenery = New Scenery($pdo);
     $scenery->action('Produzir Lixo', function($state){
-        $umDiaQualquer = new ServicoDeLixo($state['new']);    
+        $umDiaQualquer = new ServicoDeLixo($state->new);    
         $umDiaQualquer->produzirLixo();
     }, function($state){
-        $repoNew = new LixoRepository($state['new']);
-        $repoOld = new LixoRepository($state['old']);
+        $repoNew = new LixoRepository($state->new);
+        $repoOld = new LixoRepository($state->old);
         $newStatelocalDeRetirada = $repoNew->find(1);
         $oldStatelocalDeRetirada = $repoOld->find(1);        Assertion::true(($newStatelocalDeRetirada >= $oldStatelocalDeRetirada),"Coleta Esta mais rapida que geração" );
     });
 
     $scenery->action('Coletar Lixo', function($state){
-        $umDiaQualquer = new ServicoDeLixo($state['new']);    
+        $umDiaQualquer = new ServicoDeLixo($state->new);    
         $umDiaQualquer->coletarLixo();
     }, function($state){
-        $repositoryNew = new LixoRepository($state['new']);
-        $repositoryOld = new LixoRepository($state['old']);
+        $repositoryNew = new LixoRepository($state->new);
+        $repositoryOld = new LixoRepository($state->old);
         $newStateLixao = $repositoryNew->find(1);
         $oldStateLixao = $repositoryOld->find(1);
         Assertion::true(($oldStateLixao['localDeRetirada'] >= $newStateLixao['localDeRetirada']),"Recolhendo Pouco");

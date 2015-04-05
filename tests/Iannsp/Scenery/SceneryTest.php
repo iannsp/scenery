@@ -78,14 +78,16 @@ class SceneryTest extends \PHPUnit_Framework_TestCase
         assert_options(ASSERT_ACTIVE, 1);
         $scenery = new Scenery($this->pdo);
         $pdo = $this->pdo;
-        $scenery->action('Altera Uma Pessoa', function()use ($pdo){
+        $scenery->action('Altera Uma Pessoa', function($state)use ($pdo){
            $pessoaData = PessoaSample:: find($pdo, 1);
            $pessoa = new PessoaSample($pessoaData);
+           $state->messages[]="update Person {$pessoa->data['name']} para 'Ivo Nascimento'";
            $pessoa->data['name'] = "Ivo Nascimento";
            $pessoa->save($pdo);
         }, function($state) use($pdo){
             $pessoaData = PessoaSample:: find($pdo, 1);
             $pessoa = new PessoaSample($pessoaData);
+            $state->messages[]= " Verificação de Alteração name = {$pessoaData['name']}";
             assert('$pessoa->data[\'name\']=="Ivo Nascimento"',"ahhhhhh");
         }
     );
@@ -93,20 +95,19 @@ class SceneryTest extends \PHPUnit_Framework_TestCase
     $result = $runnerStrategy->run(['cycles'=>1, 'loud'=>false]);
     $this->assertTrue(is_array($result));
     $this->assertCount(1, $result);
-    $this->assertArrayHasKey('data', $result[0]);
-    }
+}
     
     public function test_run_actions_lot_of_cycle()
     {
         $scenery = new Scenery($this->pdo);
         $scenery->action('Altera Uma Pessoa', function($state){
-           $pessoaData = PessoaSample:: find($state['new'], 1);
+           $pessoaData = PessoaSample:: find($state->new, 1);
            $pessoa = new PessoaSample($pessoaData);
            $pessoa->data['name'] = $pessoa->data['name']."X";
-           $pessoa->save($state['new']);
+           $pessoa->save($state->new);
         }, function($state){
-            $newPessoaData = PessoaSample:: find($state['new'], 1);
-            $oldPessoaData = PessoaSample:: find($state['old'], 1);
+            $newPessoaData = PessoaSample:: find($state->new, 1);
+            $oldPessoaData = PessoaSample:: find($state->old, 1);
           assert('$oldPessoaData[\'name\']."X"==$newPessoaData["name"]',"Nao esta seguindo a regra");
         }
     );
@@ -114,7 +115,6 @@ class SceneryTest extends \PHPUnit_Framework_TestCase
     $result = $runnerStrategy->run(['cycles'=>10, 'loud'=>false]);
     $this->assertTrue(is_array($result));
     $this->assertCount(10, $result);
-    $this->assertArrayHasKey('data', $result[0]);
     $final = PessoaSample:: find($this->pdo, 1);
     $this->assertEquals($final['name'], "IvoXXXXXXXXXX");
     }
@@ -123,13 +123,13 @@ class SceneryTest extends \PHPUnit_Framework_TestCase
     {
         $scenery = new Scenery($this->pdo);
         $scenery->action('Altera Uma Pessoa', function($state){
-           $pessoaData = PessoaSample:: find($state['old'], 1);
+           $pessoaData = PessoaSample:: find($state->old, 1);
            $pessoa = new PessoaSample($pessoaData);
            $pessoa->data['name'] = $pessoa->data['name']."X";
-           $pessoa->save($state['new']);
+           $pessoa->save($state->new);
         }, function($state){
-            $newPessoaData = PessoaSample:: find($state['new'], 1);
-            $oldPessoaData = PessoaSample:: find($state['old'], 1);
+            $newPessoaData = PessoaSample:: find($state->new, 1);
+            $oldPessoaData = PessoaSample:: find($state->old, 1);
             \Assert\that($newPessoaData['name'])->contains('IvoX');
         }
     );
@@ -140,7 +140,6 @@ class SceneryTest extends \PHPUnit_Framework_TestCase
     $result = $runnerStrategy->run(['until'=>$rodarAte,'by'=>1,'loud'=>false]);
     $this->assertTrue(is_array($result));
     $this->assertCount(4, $result);
-    $this->assertArrayHasKey('data', $result[0]);
     $final = PessoaSample:: find($this->pdo, 1);
     $this->assertEquals($final['name'], "IvoXXXX");
     }
