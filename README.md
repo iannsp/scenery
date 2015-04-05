@@ -86,11 +86,14 @@ email varchar(100)
 O estado dos dados após inserir uma person de nome 'Ivo' e email 'iannsp@gmail.com' é.
 
 ```php
-$data = [
-    'person'=>[
-        ['id'=>1, 'name'=>'Ivo', 'email'=>'iannsp@gmail.com']
-    ]
-];
+        $dsn ='sqlite:/tmp/sceneryTest.sq3';
+        $pdo = new \PDO( $dsn);
+        $pdo->exec('
+        drop table person; 
+        create table person(id integer primary key, name CHARACTER(100), email CHARACTER(100))');
+        $pdo->exec("insert into person (name, email) values ('Ivo','iannsp@gmail.com')");
+        // usei o hack pq clone esta dando segmentFault(precisa verificar o que estou fazendo de errado ou se é bug).
+        $pdo->newFromDsn = new \PDO( $dsn);
 ```
 ####Exemplo de Cenário####
 
@@ -103,8 +106,8 @@ Caracteristicas:
 // require o bootstrap da aplicação.
 require 'bootstrap.php';
 
-    // cria o cenário utilizando um conjunto de dados vazios.
-    $scenery = new Scenery(new Data());
+    // cria o cenário utilizando um conjunto de dados inicial.
+    $scenery = new Scenery($pdo);
 
     // adiciona a Action Criar Pessoa
     $scenery->action('Criar Pessoa', function($state){
