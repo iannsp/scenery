@@ -23,20 +23,22 @@ class Scenery{
     
     public function run($cycleId, $loud=false)
     {
-        $result = [];
-        $state['cycle']= $cycleId;
-        $state['new'] = $this->data;
-        $state['old'] = $this->data->newFromDsn;
-        $state['loud'] = $loud;
+        $state  = new \StdClass();
+        $result = ['messages'=>[]];
+        $state->cycle = $cycleId;
+        $state->new = $this->data;
+        $state->old = $this->data->newFromDsn;
+        $state->loud = $loud;
         foreach($this->actions as $actionItem){
-            $state['new']->exec('Begin;');//beginTransaction();
+            $state->messages = [];
+            $state->new->exec('Begin;');//beginTransaction();
             $actionItem['action']($state);
             $actionItem['expectedDomain']($state);
             if (!is_null($actionItem['expectedInfraStructure']))
                 $actionItem['expectedInfraStructure']($state);
-            $state['new']->exec('Commit');
+            $state->new->exec('Commit');
+            $result['messages'] = array_merge($result['messages'], $state->messages);
         }
-//        return ['data'=>(clone $this->data)]; Tem que virar um dump dos dados
-        return ['data'=>(clone $this->data)];
+        return $result;
     }
 }
