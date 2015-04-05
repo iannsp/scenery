@@ -13,12 +13,12 @@ class ByUntilDate implements Strategy{
     {
         $result = [];
         if (! $rule['until'] instanceOf \DateTime || !is_numeric($rule['by']))
-            throw new \Exception("rule for run BYUntilDate Strategy is [\Datetime until, numeric by]");
+            throw new \Exception("rule for run BYUntilDate Strategy is [\\Datetime until, numeric by]");
         $untilDate = $rule['until'];
         $idOfCycle = 0;
-        
+
         $now = new \DateTime();
-        
+
         $diff = (int)$untilDate->format('U') - (int)$now->format("U");
         while($diff>0){
             $result[$idOfCycle] = $this->scenery->run($idOfCycle, $rule['loud']);
@@ -34,6 +34,6 @@ class ByUntilDate implements Strategy{
         }
         return $result;
     }
-    
-    
+
+
 }
