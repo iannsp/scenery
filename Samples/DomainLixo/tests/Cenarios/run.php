@@ -18,7 +18,7 @@ use Iannsp\Scenery\RunStrategy\Factory;
 
 use Assert\Assertion;
 
-$dsn ='sqlite:/tmp/sceneryTest.sq3';
+$dsn ='sqlite:/tmp/lixeiro.sq3';
 $pdo = new \PDO( $dsn);
 $pdo->exec('
 drop table sistemaDeLixo; 
