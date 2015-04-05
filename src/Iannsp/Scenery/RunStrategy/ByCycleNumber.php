@@ -12,12 +12,13 @@ class ByCycleNumber implements Strategy{
     public function run($rule)
     {
         $result = [];
-        if (!is_int($rule))
+        //['cycles'=>1, 'loud'=>false]
+        if (!is_int($rule['cycles']))
             throw new \Exception("rule for run ByCycleNumber Strategy is int totalOfCycles");
-        $totalOfCyCles = $rule;
+        $totalOfCyCles = $rule['cycles'];
         $idOfCycle = 0;
         
-        while ($idOfCycle < $rule){
+        while ($idOfCycle < $rule['cycles']){
             $result[$idOfCycle] = 
                 $this->scenery->run($idOfCycle);
             $idOfCycle++;
