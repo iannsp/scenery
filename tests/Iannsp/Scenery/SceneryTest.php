@@ -125,11 +125,14 @@ class SceneryTest extends \PHPUnit_Framework_TestCase
         $scenery->action('Altera Uma Pessoa', function($state){
            $pessoaData = PessoaSample:: find($state->old, 1);
            $pessoa = new PessoaSample($pessoaData);
+           $state->messages[]= "[ACTION] Nome Original = {$pessoaData['name']}";
            $pessoa->data['name'] = $pessoa->data['name']."X";
+           $state->messages[]= "[ACTION] Nome Alterado +1'X' = {$pessoaData['name']} para {$pessoa->data['name']}";
            $pessoa->save($state->new);
         }, function($state){
             $newPessoaData = PessoaSample:: find($state->new, 1);
             $oldPessoaData = PessoaSample:: find($state->old, 1);
+            $state->messages[]= "[DOMAIN] Old:{$oldPessoaData['name']}, new: {$newPessoaData['name']}";
             \Assert\that($newPessoaData['name'])->contains('IvoX');
         }
     );
@@ -140,6 +143,7 @@ class SceneryTest extends \PHPUnit_Framework_TestCase
     $result = $runnerStrategy->run(['until'=>$rodarAte,'by'=>1,'loud'=>false]);
     $this->assertTrue(is_array($result));
     $this->assertCount(4, $result);
+    var_dump($result);
     $final = PessoaSample:: find($this->pdo, 1);
     $this->assertEquals($final['name'], "IvoXXXX");
     }
