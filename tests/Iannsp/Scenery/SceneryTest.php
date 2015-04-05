@@ -55,7 +55,6 @@ class SceneryTest extends \PHPUnit_Framework_TestCase
     
     public function test_add_action()
     {
-        assert_options(ASSERT_ACTIVE, 1);
         $scenery = new Scenery($this->pdo);
         $pdo = $this->pdo;
         $scenery->action('Altera Uma Pessoa', function()use ($pdo){
@@ -138,7 +137,7 @@ class SceneryTest extends \PHPUnit_Framework_TestCase
     $rodarAte = new \Datetime();
     $rodarAte->add(new \DateInterval("P0YT0M4S"));
     $runnerStrategy = factory::get(Strategy::RUN_UNTILDATE,$scenery);
-    $result = $runnerStrategy->run(['until'=>$rodarAte,'by'=>1,'loud'=>true]);
+    $result = $runnerStrategy->run(['until'=>$rodarAte,'by'=>1,'loud'=>false]);
     $this->assertTrue(is_array($result));
     $this->assertCount(4, $result);
     $this->assertArrayHasKey('data', $result[0]);
