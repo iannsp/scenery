@@ -17,4 +17,4 @@ Linguagem do Dominio
 * Lixao: Local onde o lixo recolhido do Local de retirada é dispensado.
 
 
-![resultado](https://github.com/iannsp/scenery/blob/master/Samples/DomainLixo/sample_result.png)
+![resultado](https://github.com/iannsp/scenery/blob/master/Samples/DomainLixo/sample_message_output.png)
