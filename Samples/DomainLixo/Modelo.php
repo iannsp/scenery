@@ -11,7 +11,7 @@ class Lixeiro
     private $lixos = [];
     public function retiraNoLocal(LocalDeRetirada $local)
     {
-        $this->lixos = $local->recolhe(rand(1,4));
+        $this->lixos = $local->recolhe(rand(3,6));
     }
     public function armazenarNoLixao(Lixao $lixao)
     {
@@ -107,7 +107,7 @@ class ServicoDeLixo
     }
     public function coletarLixo()
     {
-        $numeroDeLixeiros = rand(3,6);
+        $numeroDeLixeiros = rand(3,4);
         $lixeiros = [];
         for($i=0; $i<$numeroDeLixeiros; $i++)
         {
@@ -120,7 +120,7 @@ class ServicoDeLixo
     
     public function produzirLixo()
     {
-        $numeroDeMoradores = rand(1,10);
+        $numeroDeMoradores = rand(1,15);
         $moradores = [];
         for($i=0; $i<$numeroDeMoradores; $i++)
         {

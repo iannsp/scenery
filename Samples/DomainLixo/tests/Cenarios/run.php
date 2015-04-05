@@ -44,7 +44,7 @@ $dados = new Data([
     });
 
     $rodarAte = new \Datetime();
-    $rodarAte->add(new \DateInterval("P0YT0M10S"));
+    $rodarAte->add(new \DateInterval("P0YT3M0S"));
     $runnerStrategy = Factory::get(Strategy::RUN_UNTILDATE,$scenery);
     $result = $runnerStrategy->run(['until'=>$rodarAte,'by'=>1]);
     $info = ["localDeRetirada"=>0,"Lixao"=>0];
