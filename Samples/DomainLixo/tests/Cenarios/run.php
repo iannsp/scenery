@@ -43,12 +43,9 @@ $pdo->newFromDsn = new \PDO( $dsn);
     }, function($state){
         $repositoryNew = new LixoRepository($state['new']);
         $repositoryOld = new LixoRepository($state['old']);
-        var_dump($repositoryOld->find(1));
-/*
-        $newStateLixao = $state['new']->get()['sistemaDeLixo'][1]['Lixao'];
-        $oldStateLixao = $state['old']->get()['sistemaDeLixo'][1]['Lixao'];
-        Assertion::true(($newStateLixao >= $oldStateLixao),"Recolhendo Pouco Lixo" );
-*/
+        $newStateLixao = $repositoryNew->find(1);
+        $oldStateLixao = $repositoryOld->find(1);
+        Assertion::true(($oldStateLixao['localDeRetirada'] >= $newStateLixao['localDeRetirada']),"Recolhendo Pouco");
     });
 
     $rodarAte = new \Datetime();
