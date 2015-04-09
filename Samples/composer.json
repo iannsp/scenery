@@ -1,0 +1,20 @@
+{
+    "name": "sampledomain/lixo",
+    "description": "this is a sample of how to use scenery to test a domain",
+    "license": "GPL-3.0+",
+    "authors": [
+        {
+            "name": "Ivo Nascimento",
+            "email": "iannsp@gmail.com"
+        }
+    ],
+    "require": {
+        "beberlei/assert": "~2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "SampleDomain\\Lixo\\": ["Lixo/src/", "tests/"],
+            "Iannsp\\Scenery\\":["../src/"]
+        }
+    }    
+}
