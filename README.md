@@ -124,8 +124,8 @@ require 'bootstrap.php';
         $state->assertEquals($persons[0]->get('nome'), $person['nome']);
         }, function($state){
           // teste de infra estrutura
-          $newPersons = $state['new']->get(['person'=>[]]);
-          $oldPersons = $state['old']->get(['person'=>[1]]);
+          $newPersons = $state->new->get(['person'=>[]]);
+          $oldPersons = $state->old->get(['person'=>[1]]);
           $state->assertCount(0, $oldPersons);
           $state->assertCount(1, $newPersons);
         }
