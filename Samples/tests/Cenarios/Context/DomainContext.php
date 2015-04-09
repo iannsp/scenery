@@ -29,5 +29,12 @@ class DomainContext extends AbstractContext
     {
         return new SampleObjectForDomain();
     }
-    
+/*
+    TODO: develop injection for application configuration
+    public function ServicoDeLixo()
+    {
+        
+        return new ServicoDeLixo();
+    }
+*/
 }
