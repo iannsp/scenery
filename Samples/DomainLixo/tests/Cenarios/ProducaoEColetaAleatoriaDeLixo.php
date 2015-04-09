@@ -27,6 +27,7 @@ $pdo->newFromDsn = new \PDO( $dsn);
 
     $scenery = New Scenery($pdo);
     $scenery->action('Produzir Lixo', function($state){
+        
         $umDiaQualquer = new ServicoDeLixo($state->new);    
         $umDiaQualquer->produzirLixo();
         $state->messages[]= "[ACTION] Produzindo Lixo com ServicoDeLixo->produzirLixo";
